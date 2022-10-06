@@ -41,6 +41,18 @@ const DUMMY_EXPENSES = [
         amount: 18.99,
         date: new Date("2021-12-17"),
     },
+    {
+        id: "e7",
+        description: "Meal",
+        amount: 11.99,
+        date: new Date("2021-12-12"),
+    },
+    {
+        id: "e8",
+        description: "Meal",
+        amount: 11.99,
+        date: new Date("2021-12-28"),
+    },
 ]
 
 export default function ExpensesOutput({ expenses, expensesPeriod }) {

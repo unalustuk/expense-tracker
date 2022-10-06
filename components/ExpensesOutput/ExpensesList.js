@@ -24,5 +24,5 @@ export default function ExpensesList({ expenses }) {
     )
 }
 const styles = StyleSheet.create({
-    listContainer: { paddingVertical: 8 },
+    listContainer: { paddingVertical: 16 },
 })
