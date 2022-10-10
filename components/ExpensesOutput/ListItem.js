@@ -32,6 +32,11 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         justifyContent: "space-between",
         alignItems: "center",
+        elevation: 3,
+        shadowColor: "black",
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.4,
     },
     pressed: {
         opacity: 0.8,
@@ -40,11 +45,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
     },
     priceContainer: {
+        minWidth: 80,
         backgroundColor: GlobalStyles.colors.primary800,
         padding: 12,
         borderRadius: 6,
     },
-    priceText: { color: "white", fontWeight: "bold", fontSize: 16 },
+    priceText: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 16,
+        textAlign: "center",
+    },
     descrText: { fontSize: 16, marginBottom: 2 },
     dateText: { fontWeight: "bold" },
 })
