@@ -1,13 +1,16 @@
 import { View, Text, StyleSheet, Pressable } from "react-native"
-import React from "react"
+import { useNavigation } from "@react-navigation/native"
 import { GlobalStyles } from "../../constants/styles"
 
 export default function ListItem({ amount, descr, date }) {
+    const navigation = useNavigation()
+    function expensePressHandler() {
+        navigation.navigate("ManageExpense")
+    }
     return (
         <Pressable
-            style={({ pressed }) => {
-                return pressed ? styles.pressed : ""
-            }}
+            style={({ pressed }) => pressed && styles.pressed}
+            onPress={expensePressHandler}
         >
             <View style={styles.container}>
                 <View style={styles.infoContainer}>
@@ -56,6 +59,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
     },
-    descrText: { fontSize: 16, marginBottom: 2 },
-    dateText: { fontWeight: "bold" },
+    descrText: { fontSize: 16, marginBottom: 2, fontWeight: "bold" },
+    dateText: { fontSize: 16, fontWeight: "500" },
 })
