@@ -8,7 +8,12 @@ function renderExpenseItem(itemData) {
 
     const date = Moment(item.date).format("Do MMM YYYY")
     return (
-        <ListItem amount={item.amount} descr={item.description} date={date} />
+        <ListItem
+            id={item.id}
+            amount={item.amount}
+            descr={item.description}
+            date={date}
+        />
     )
 }
 

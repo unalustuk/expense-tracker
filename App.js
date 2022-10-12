@@ -92,7 +92,7 @@ export default function App() {
                     <Stack.Screen
                         name="ManageExpense"
                         component={ManageExpense}
-                        options={{ presentation: "modal" }}
+                        // options={{ presentation: "modal" }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

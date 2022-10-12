@@ -2,10 +2,12 @@ import { View, Text, StyleSheet, Pressable } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalStyles } from "../../constants/styles"
 
-export default function ListItem({ amount, descr, date }) {
+export default function ListItem({id, amount, descr, date }) {
     const navigation = useNavigation()
     function expensePressHandler() {
-        navigation.navigate("ManageExpense")
+        navigation.navigate("ManageExpense",{
+            expenseId: id
+        })
     }
     return (
         <Pressable

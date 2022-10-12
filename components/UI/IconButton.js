@@ -17,8 +17,6 @@ export default function IconButton({ name, size, color, onPress }) {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        justifyContent: "center",
-        alignItems: "center",
         borderRadius: 24,
         padding: 6,
         marginHorizontal: 8,
