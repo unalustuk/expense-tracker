@@ -1,13 +1,45 @@
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, Alert } from "react-native"
 import React, { useState } from "react"
 import Input from "./Input"
+import Button from "../UI/Button"
 
-export default function ExpenseForm() {
+export default function ExpenseForm({
+    submitButtonLabel,
+    onCancel,
+    onSubmit,
+    defaultValues,
+}) {
     const [inputValues, setInputValues] = useState({
-        amount: "",
-        date: "",
-        description: "",
+        amount: defaultValues ? defaultValues.amount.toString() : "",
+        date: defaultValues
+            ? defaultValues.date
+                  .toISOString()
+                  .slice(0, 10)
+                  .split("-")
+                  .reverse()
+                  .join("-")
+            : "",
+        description: defaultValues ? defaultValues.description : "",
     })
+
+    function submitHandler() {
+        const expenseData = {
+            amount: +inputValues.amount,
+            date: new Date(inputValues.date),
+            description: inputValues.description,
+        }
+
+        const amountIsValid =
+            !isNaN(expenseData.amount) && expenseData.amount > 0
+        const dateIsValid = expenseData.date.toString() === "Invalid Date"
+        const descriptionIsValid = expenseData.description.trim().length > 0
+
+        if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+            Alert.alert("Invalid input", "check input values")
+            return
+        }
+        onSubmit(expenseData)
+    }
     function inputChangeHandler(inputId, enteredValue) {
         setInputValues((prevState) => {
             return {
@@ -49,6 +81,18 @@ export default function ExpenseForm() {
                     value: inputValues.description,
                 }}
             />
+            <View style={styles.buttonsContainer}>
+                <Button
+                    mode="flat"
+                    onPress={onCancel}
+                    style={styles.buttonStyle}
+                >
+                    Cancel
+                </Button>
+                <Button onPress={submitHandler} style={styles.buttonStyle}>
+                    {submitButtonLabel}
+                </Button>
+            </View>
         </View>
     )
 }
@@ -68,5 +112,14 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         flex: 1,
+    },
+    buttonStyle: {
+        minWidth: 120,
+        marginHorizontal: 8,
+    },
+    buttonsContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
 })
