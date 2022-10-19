@@ -14,9 +14,12 @@ import { ExpensesContext } from "../store/expenses-context"
 import ExpenseForm from "../components/ManageExpense/ExpenseForm"
 import { storeExpense, updateExpense, deleteExpense } from "../util/http"
 import LoadingOverlay from "../components/UI/LoadingOverlay"
+import ErrorOverlay from "../components/UI/ErrorOverlay"
 
 export default function ManageExpense({ route, navigation }) {
     const [isFetching, setIsFetching] = useState(false)
+    const [error, setError] = useState()
+
     const expensesCtx = useContext(ExpensesContext)
     const editedExpenseId = route.params?.expenseId
     const isEditing = !!editedExpenseId
@@ -36,10 +39,14 @@ export default function ManageExpense({ route, navigation }) {
 
     async function deleteExpenseHandler() {
         setIsFetching(true)
-        await deleteExpense(editedExpenseId)
-        expensesCtx.deleteExpense(editedExpenseId)
-
-        navigation.goBack()
+        try {
+            await deleteExpense(editedExpenseId)
+            expensesCtx.deleteExpense(editedExpenseId)
+            navigation.goBack()
+        } catch (error) {
+            setError("Something's gone wrong.")
+            setIsFetching(false)
+        }
     }
 
     function cancelHandler() {
@@ -47,16 +54,30 @@ export default function ManageExpense({ route, navigation }) {
     }
 
     async function confirmHandler(expenseData) {
-        if (isEditing) {
-            setIsFetching(true)
-            await updateExpense(editedExpenseId, expenseData)
-            expensesCtx.updateExpense(editedExpenseId, expenseData)
-        } else {
-            setIsFetching(true)
-            const id = await storeExpense(expenseData)
-            expensesCtx.addExpense({ ...expenseData, id: id })
+        setIsFetching(true)
+        try {
+            if (isEditing) {
+                await updateExpense(editedExpenseId, expenseData)
+                expensesCtx.updateExpense(editedExpenseId, expenseData)
+            } else {
+                setIsFetching(true)
+                const id = await storeExpense(expenseData)
+                expensesCtx.addExpense({ ...expenseData, id: id })
+            }
+            navigation.goBack()
+        } catch (error) {
+            setError("Something's gone wrong.")
+            setIsFetching(false)
         }
+    }
+
+    function errorHandler() {
+        setError(null)
         navigation.goBack()
+    }
+
+    if (error && !isFetching) {
+        return <ErrorOverlay message={error} onConfirm={errorHandler} />
     }
 
     if (isFetching) {
